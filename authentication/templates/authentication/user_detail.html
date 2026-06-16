@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block content %}
+        <section class="py-5 text-center container">
+            <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">User Details</h1>
+                <p class="lead text-body-secondary">
+                    Here are your details. You can update your information or view your articles.
+                </p>
+                {% if user.profile_picture %}
+                <img
+                    class="mb-4"
+                    src="{{ user.photo_profile.url }}"
+                    alt=""
+                    width="72"
+                    height="57"
+                />
+                {% else %}
+                <img
+                    class="mb-4"
+                    src="/static/profile_pics/default_profile.png"
+                    alt=""
+                    width="72"
+                    height="57"
+                />
+                {% endif %}
+
+                <ul class="list-group">
+                    <li class="list-group-item"><strong>Username:</strong> {{ user.username }}</li>
+                    <li class="list-group-item"><strong>Email:</strong> {{ user.email }}</li>
+                    <li class="list-group-item"><strong>First Name:</strong> {{ user.first_name }}</li>
+                    <li class="list-group-item"><strong>Last Name:</strong> {{ user.last_name }}</li>
+
+                </ul>
+                <div class="mt-4">
+                    <a href="{% url 'update_user' user.pk %}" class="btn btn-primary">Update Details</a>
+                    <a href="{% url 'user_articles' %}" class="btn btn-secondary">My Articles</a>
+                </div>
+
+                <form method="post" action="{% url 'delete_user' user.pk %}" class="mt-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Delete Account</button>
+                </form>
+
+                <form method="post" action="{% url 'logout' %}" class="mt-2">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-warning">Logout</button>
+                </form>
+
+            </div>
+            </div>
+        </section>  
+
+{% endblock %}

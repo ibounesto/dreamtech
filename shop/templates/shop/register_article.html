@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+        <section class="py-5 text-center container">
+            <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h1 class="fw-light">Register Article</h1>
+                <p class="lead text-body-secondary">
+                    Please fill out the form below to register your article.
+                </p>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-primary w-100 py-2" type="submit">
+                    Register Article
+                    </button>
+                </form>
+                <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2025 </p>  
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
