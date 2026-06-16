@@ -1,19 +1,23 @@
 from django.shortcuts import render,redirect,get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView, UpdateView, DeleteView, CreateView
 from . import forms, models
 
+@login_required
 class ArticleUpdateView(UpdateView):
     model = models.Article
     template_name = 'shop/update_article.html'
     context_object_name = 'article'
     fields = ['name', 'description', 'image', 'price']
 
+@login_required
 class ArticleDeleteView(DeleteView):
     model = models.Article
     template_name = 'shop/delete_article.html'
     context_object_name = 'article'
     success_url = '/'
 
+@login_required
 class ArticleDetailView(DetailView):
     model = models.Article
     template_name = 'shop/article_detail.html'
@@ -25,13 +29,14 @@ class HomeView(ListView):
     template_name = 'shop/home.html'
     context_object_name = 'articles'
 
-
+@login_required
 def user_articles(request):
     articles = models.Article.objects.filter(uploader=request.user)
     return render(request,'shop/user_articles.html',context={
         'articles': articles
     })
 
+@login_required
 def add_to_cart(request, pk):
     article = get_object_or_404(models.Article, id=pk)
     panier = request.session.get('panier', {})
@@ -45,6 +50,7 @@ def add_to_cart(request, pk):
     request.session['panier'] = panier
     return redirect('home')
 
+@login_required
 def cart(request):
     panier = request.session.get('panier', {})
     articles = models.Article.objects.filter(pk__in=panier)
@@ -52,6 +58,7 @@ def cart(request):
         'articles': articles
     })
 
+@login_required
 def register_article(request):
     message = ''
     form= forms.RegisterArticleForm()
